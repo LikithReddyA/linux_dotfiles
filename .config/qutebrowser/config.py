@@ -35,7 +35,7 @@ config.load_autoconfig(False)
 #   - no-3rdparty: Accept cookies from the same origin only. This is known to break some sites, such as GMail.
 #   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
 #   - never: Don't accept cookies at all.
-config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
+config.set("content.cookies.accept", "all", "chrome-devtools://*")
 
 # Which cookies to accept. With QtWebEngine, this setting also controls
 # other features with tracking capabilities similar to those of cookies;
@@ -59,12 +59,12 @@ config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
 #   - no-3rdparty: Accept cookies from the same origin only. This is known to break some sites, such as GMail.
 #   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
 #   - never: Don't accept cookies at all.
-config.set('content.cookies.accept', 'all', 'devtools://*')
+config.set("content.cookies.accept", "all", "devtools://*")
 
 # Value to send in the `Accept-Language` header. Note that the value
 # read from JavaScript is always the global value.
 # Type: String
-config.set('content.headers.accept_language', '', 'https://matchmaker.krunker.io/*')
+config.set("content.headers.accept_language", "", "https://matchmaker.krunker.io/*")
 
 # User agent to send.  The following placeholders are defined:  *
 # `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
@@ -81,53 +81,69 @@ config.set('content.headers.accept_language', '', 'https://matchmaker.krunker.io
 # increased compatibility.  Note that the value read from JavaScript is
 # always the global value.
 # Type: FormatString
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:136.0) Gecko/20100101 Firefox/139.0', 'https://accounts.google.com/*')
+config.set(
+    "content.headers.user_agent",
+    "Mozilla/5.0 ({os_info}; rv:136.0) Gecko/20100101 Firefox/139.0",
+    "https://accounts.google.com/*",
+)
 
 # Load images automatically in web pages.
 # Type: Bool
-config.set('content.images', True, 'chrome-devtools://*')
+config.set("content.images", True, "chrome-devtools://*")
 
 # Load images automatically in web pages.
 # Type: Bool
-config.set('content.images', True, 'devtools://*')
+config.set("content.images", True, "devtools://*")
 
 # Enable JavaScript.
 # Type: Bool
-config.set('content.javascript.enabled', True, 'chrome-devtools://*')
+config.set("content.javascript.enabled", True, "chrome-devtools://*")
 
 # Enable JavaScript.
 # Type: Bool
-config.set('content.javascript.enabled', True, 'devtools://*')
+config.set("content.javascript.enabled", True, "devtools://*")
 
 # Enable JavaScript.
 # Type: Bool
-config.set('content.javascript.enabled', True, 'chrome://*/*')
+config.set("content.javascript.enabled", True, "chrome://*/*")
 
 # Enable JavaScript.
 # Type: Bool
-config.set('content.javascript.enabled', True, 'qute://*/*')
+config.set("content.javascript.enabled", True, "qute://*/*")
 
 # Allow locally loaded documents to access remote URLs.
 # Type: Bool
-config.set('content.local_content_can_access_remote_urls', True, 'file:///home/likith/.local/share/qutebrowser/userscripts/*')
+config.set(
+    "content.local_content_can_access_remote_urls",
+    True,
+    "file:///home/likith/.local/share/qutebrowser/userscripts/*",
+)
 
 # Allow locally loaded documents to access other local URLs.
 # Type: Bool
-config.set('content.local_content_can_access_file_urls', False, 'file:///home/likith/.local/share/qutebrowser/userscripts/*')
+config.set(
+    "content.local_content_can_access_file_urls",
+    False,
+    "file:///home/likith/.local/share/qutebrowser/userscripts/*",
+)
 
 
 # Default font families to use. Whenever "default_family" is used in a
 # font setting, it's replaced with the fonts listed here. If set to an
 # empty value, a system-specific monospace default is used.
 # Type: List of Font, or Font
-c.fonts.default_family = '"Hack Nerd Font"'
+c.fonts.default_family = [
+    "Hack Nerd Font",
+    "UbuntuMono Nerd Font",
+    "Font Awesome 7 Free",
+]
 
 # Default font size to use. Whenever "default_size" is used in a font
 # setting, it's replaced with the size listed here. Valid values are
 # either a float value with a "pt" suffix, or an integer value with a
 # "px" suffix.
 # Type: String
-c.fonts.default_size = '11pt'
+c.fonts.default_size = "11pt"
 
 # Font used in the completion widget.
 # Type: Font
@@ -139,7 +155,7 @@ c.fonts.debug_console = '11pt "Hack Nerd Font"'
 
 # Font used for prompts.
 # Type: Font
-c.fonts.prompts = 'default_size sans-serif'
+c.fonts.prompts = "default_size sans-serif"
 
 # Font used in the statusbar.
 # Type: Font
@@ -164,28 +180,29 @@ c.fonts.statusbar = '11pt "Hack Nerd Font"'
 # qutebrowser`.
 # Type: Dict
 c.url.searchengines = {
-    'DEFAULT': 'https://www.google.com/search?q={}',
-    'duck': 'https://duckduckgo.com/?q={}', 
-    'am': 'https://www.amazon.com/s?k={}',
-    'aw': 'https://wiki.archlinux.org/?search={}',
-    'ub': 'https://www.urbandictionary.com/define.php?term={}',
-    'wiki': 'https://en.wikipedia.org/wiki/{}',
-    'yt': 'https://www.youtube.com/results?search_query={}'
+    "DEFAULT": "https://www.google.com/search?q={}",
+    "duck": "https://duckduckgo.com/?q={}",
+    "am": "https://www.amazon.com/s?k={}",
+    "aw": "https://wiki.archlinux.org/?search={}",
+    "ub": "https://www.urbandictionary.com/define.php?term={}",
+    "wiki": "https://en.wikipedia.org/wiki/{}",
+    "yt": "https://www.youtube.com/results?search_query={}",
 }
 
 
 # enable dark mode
-config.set("colors.webpage.darkmode.enabled",True)
+config.set("colors.webpage.darkmode.enabled", True)
 
 # Download directory
-c.downloads.location.directory = '~/Downloads'
+c.downloads.location.directory = "~/Downloads"
 
 # Custom keybindings
-config.bind('M','hint links spawn mpv {hint-url}')
-config.bind('Z', 'hint links spawn alacritty -e yt-dlp -P ~/Downloads {hint-url}')
-config.bind('t', 'cmd-set-text -s :open -t')
-config.bind('xb', 'config-cycle statusbar.show always never')
-config.bind('xt', 'config-cycle tabs.show always never')
-config.bind('xx', 'config-cycle statusbar.show always never;; config-cycle tabs.show always never')
-
-
+config.bind("M", "hint links spawn mpv {hint-url}")
+config.bind("Z", "hint links spawn alacritty -e yt-dlp -P ~/Downloads {hint-url}")
+config.bind("t", "cmd-set-text -s :open -t")
+config.bind("xb", "config-cycle statusbar.show always never")
+config.bind("xt", "config-cycle tabs.show always never")
+config.bind(
+    "xx",
+    "config-cycle statusbar.show always never;; config-cycle tabs.show always never",
+)
