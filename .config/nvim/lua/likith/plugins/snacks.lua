@@ -100,5 +100,19 @@ return {
     scroll = { enabled = false },
     statuscolumn = { enabled = false },
     words = { enabled = false },
+    terminal = {
+      enabled = true,
+    },
+  },
+
+  keys = {
+    {
+      "<C-/>",
+      function()
+        require("snacks.terminal").toggle()
+      end,
+      desc = "Toggle Terminal",
+      mode = { "n", "t" },
+    },
   },
 }

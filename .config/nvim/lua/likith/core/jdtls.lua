@@ -416,7 +416,7 @@ function M.setup_jdtls()
   local jdtls = require("jdtls")
 
   -- Find project root
-  local root_dir = jdtls.setup.find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" })
+  local root_dir = jdtls.setup.find_root({ "build.gradle", ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" })
   if not root_dir then
     return
   end

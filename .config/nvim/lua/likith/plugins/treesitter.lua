@@ -2,6 +2,7 @@ return {
   "nvim-treesitter/nvim-treesitter",
   event = "VeryLazy",
   build = ":TSUpdate",
+  enable = true,
   dependencies = { "windwp/nvim-ts-autotag" },
   config = function()
     require("nvim-treesitter.configs").setup({
