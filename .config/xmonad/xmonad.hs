@@ -11,7 +11,7 @@ import Workspace (myWorkspaces)
 import Hooks (myStartupHook)
 import Layouts (myLayoutHook)
 import Keys (myKeys,myTerminal,superMask)
-
+import ManageHooks (myManageHook)
 
 
 main = do
@@ -22,5 +22,6 @@ main = do
         , borderWidth = 2
         , layoutHook = myLayoutHook
         , startupHook = myStartupHook
+        , manageHook = myManageHook <+> manageDocks
         }
         `additionalKeysP` myKeys
