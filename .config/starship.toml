@@ -1,53 +1,69 @@
-#format = """
-#[╭─user───❯](bold blue) $username
-#[┣─system─❯](bold yellow) $hostname
-#[┣─project❯](bold red) $directory$rust$git_branch$git_state$git_status$package$golang$terraform$docker_context$python$docker_context$nodejs
-#[╰─cmd────❯](bold green)
-#"""
+# format = """
+# [╭─user───❯](bold blue) $username
+# [┣─system─❯](bold yellow) $hostname
+# [┣─project❯](bold red) $directory$rust$git_branch$git_state$git_status$package$golang$terraform$docker_context$python$docker_context$nodejs
+# [╰─cmd────❯](bold green)
+# """
+
+# --------------------------- Username ---------------------------
 [username]
+# Styles for normal user and root
 style_user = "green bold"
 style_root = "red bold"
+# Display username always
 format = "[$user]($style) "
 disabled = false
 show_always = true
 
+# --------------------------- Hostname ---------------------------
 [hostname]
 ssh_only = false
 format = 'on [$hostname](bold purple) '
-trim_at = "."
+trim_at = "."  # Trim domain after first dot
 disabled = false
 
-# Replace the "❯" symbol in the prompt with "➜"
-[character]                            # The name of the module we are configuring is "character"
-success_symbol = "[➜](bold green)"     # The "success_symbol" segment is being set to "➜" with the color "bold green"
+# ------------------------- Prompt Character ---------------------
+[character]
+# Symbol for successful command
+success_symbol = "[➜](bold green)"
+# Symbol for failed command
 error_symbol = "[✗](bold red)"
 
-#  
-# configure directory
+# --------------------------- Directory -------------------------
 [directory]
+# Show read-only indicator
 read_only = " "
+# Truncate directory to 10 chars or repo root
 truncation_length = 10
-truncate_to_repo = true # truncates directory to root folder if in github repo
+truncate_to_repo = true
 style = "bold italic blue"
 
+# ──────────────────────────────────────────────────────────────
+# Custom Directory Icons
+# ──────────────────────────────────────────────────────────────
+# [custom.dir_icon]
+# when = "basename $PWD"  # Runs every time the prompt is drawn
+# command = """
+# case $(basename "$PWD") in
+#   projects) echo "📁";;
+#   .dotfiles|dotfiles|.config) echo "⚙️";;
+#   workspace) echo "🚀";;
+#   src) echo "💻";;
+#   config) echo "🛠️";;
+#   *) echo "📂";;
+# esac
+# """
+# format = "$output [$path]($style)"
+# style = "bold italic blue"
+
+# ------------------------ Command Duration ---------------------
 [cmd_duration]
-min_time = 4
+min_time = 4            # Only show if command >4s
 show_milliseconds = false
 disabled = false
 style = "bold italic red"
 
-[aws]
-symbol = "  "
-
-[conda]
-symbol = " "
-
-[dart]
-symbol = " "
-
-#[directory]
-#read_only = " "
-
+# -------------------------- Docker -----------------------------
 [docker_context]
 symbol = " "
 format = "via [$symbol$context]($style) "
@@ -57,73 +73,59 @@ detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
 detect_folders = []
 disabled = false
 
-[elixir]
+# ------------------------ Programming Languages ----------------
+[aws]       
+symbol = "  "
+[conda]     
+symbol = " "
+[dart]      
+symbol = " "
+[elixir]    
 symbol = " "
-
-[elm]
+[elm]       
 symbol = " "
-
-[git_branch]
-symbol = " "
-
-[git_status]
-format = '([\[$all_status$ahead_behind\]]($style) )'
-stashed = "[${count}*](green)" 
-modified = "[${count}+](yellow)" 
-deleted =  "[${count}-](red)" 
-conflicted =  "[${count}~](red)" 
-ahead = "⇡${count}"
-behind = "⇣${count}"
-untracked = "[${count}?](blue)" 
-staged = "[${count}+](green)" 
-
-[git_state]
-style =	"bold red"
-format = "[$state( $progress_current/$progress_total) ]($style)"
-rebase = "rebase"
-merge = "merge"	
-revert = "revert"	
-cherry_pick = "cherry"
-bisect = "bisect"	
-am = "am"	
-am_or_rebase = "am/rebase"
-
-[golang]
+[golang]    
 symbol = " "
-
-[hg_branch]
+[hg_branch] 
 symbol = " "
 
+# -------------------------- Java -----------------------------
 [java]
-symbol = " "
+symbol = " "                   # Java icon
+format = "[$symbol$version]($style)"  # Show icon + version
+style = "bold red"
+version_format = "v${raw}"       # Simple version display (e.g., v17.0.8)
 
-[julia]
+[julia]     
 symbol = " "
-
-[haskell]
+[haskell]   
 symbol = "λ "
-
-[memory_usage]
+[memory_usage] 
 symbol = " "
-
-[nim]
+[nim]       
 symbol = " "
-
-[nix_shell]
+[nix_shell] 
 symbol = " "
-
-[package]
-symbol = " "
-
-[perl]
+[package]   
+symbol = "󰏗 "  # Nerd Font package icon
+[perl]      
 symbol = " "
-
-[php]
+[php]       
 symbol = " "
+[ruby]      
+symbol = " "
+[rust]      
+symbol = " "
+[scala]     
+symbol = " "
+[shlvl]     
+symbol = " "
+[swift]     
+symbol = "ﯣ "
 
+# -------------------------- Python -----------------------------
 [python]
-symbol = "🐍 "
-#pyenv_version_name = true
+symbol = "󰌠 "   # Nerd Font Python icon
 format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
 style = "bold yellow"
 pyenv_prefix = "venv "
@@ -131,22 +133,47 @@ python_binary = ["./venv/bin/python", "python", "python3", "python2"]
 detect_extensions = ["py"]
 version_format = "v${raw}"
 
-[ruby]
-symbol = " "
-
-[rust]
-symbol = " "
-
-[scala]
-symbol = " "
-
-[shlvl]
-symbol = " "
-
-[swift]
-symbol = "ﯣ "
-
+# -------------------------- Node.js ----------------------------
 [nodejs]
-format = "via [ Node.js $version](bold green) "
+format = "via  Node.js $version](bold green)"
 detect_files = ["package.json", ".node-version"]
 detect_folders = ["node_modules"]
+
+# -------------------------- Git Branch -------------------------
+[git_branch]
+symbol = " "  # Branch icon
+style = "bold purple"
+format = "[$symbol$branch]($style) "  # Show only branch name
+
+# -------------------------- Git Status -------------------------
+[git_status]
+# Show all status in parentheses
+format = "([$all_status$ahead_behind]($style) )"
+
+# Symbols for file states
+staged = "[${count}●](bold green)"
+modified = "[${count}✚](bold yellow)"
+deleted = "[${count}✖](bold red)"
+conflicted = "[${count}‼](bold red)"
+untracked = "[${count}?](bold blue)"
+renamed = "[${count}➜](bold magenta)"
+stashed = "[${count}⚑](bold cyan)"
+# ignored = "[${count}◌](dimmed)"  # Uncomment if you want ignored files
+
+# Symbols for commits ahead/behind remote
+ahead = "⇡${count}"
+behind = "⇣${count}"
+style = "bold white"
+disabled = false
+
+# -------------------------- Git State --------------------------
+[git_state]
+style = "bold red"
+format = "[$state($progress_current/$progress_total)]($style)"
+rebase = "rebase"
+merge = "merge"
+revert = "revert"
+cherry_pick = "cherry"
+bisect = "bisect"
+am = "am"
+am_or_rebase = "am/rebase"
