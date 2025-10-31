@@ -6,4 +6,5 @@ alias tozsh="chsh $USER -s /bin/zsh && echo 'Log out and log back in for change 
 # Dotfiles configuration
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
-alias nvim-likith='NVIM_APPNAME=nvim-likith nvim'
+alias rm="rm -i"
+alias mv="mv -i"

@@ -197,7 +197,8 @@ config.set("colors.webpage.darkmode.enabled", True)
 c.downloads.location.directory = "~/Downloads"
 
 # Custom keybindings
-config.bind("M", "hint links spawn mpv {hint-url}")
+config.bind("M", "hint links spawn ~/.local/bin/qute_mpv.sh {hint-url}")
+config.bind("B", "hint links spawn brave {hint-url}")
 config.bind("Z", "hint links spawn alacritty -e yt-dlp -P ~/Downloads {hint-url}")
 config.bind("t", "cmd-set-text -s :open -t")
 config.bind("xb", "config-cycle statusbar.show always never")
