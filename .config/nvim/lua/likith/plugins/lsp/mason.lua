@@ -40,6 +40,7 @@ return {
         "eslint",
         "jdtls",
         "bashls",
+        "clangd",
       },
     })
 

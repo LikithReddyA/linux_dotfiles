@@ -16,6 +16,8 @@ return {
         "vim",
         "json",
         "java",
+        "python",
+        "http",
       },
       highlight = {
         enable = true,
