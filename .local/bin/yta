@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+# YouTube audio downloader with notifications via dunst (notify-send)
+# Takes folder and file name input from rofi dynamically
+# Requirements: yt-dlp, ffmpeg, notify-send, rofi
+
+URL="$1"
+
+# If URL not provided, prompt via rofi
+if [ -z "$URL" ]; then
+  URL=$(echo "" | rofi -dmenu -p "Enter YouTube URL:")
+fi
+
+if [ -z "$URL" ]; then
+  notify-send "YouTube Audio Downloader" "No URL provided!" -u critical
+  exit 1
+fi
+
+# Base music directory
+BASE_DIR="$HOME/music"
+mkdir -p "$BASE_DIR"
+
+# Get list of existing folders
+EXISTING_FOLDERS=$(find "$BASE_DIR" -maxdepth 1 -mindepth 1 -type d -printf "%f\n")
+
+# Prompt for folder name via rofi with existing folders as suggestions
+FOLDER=$(echo -e "$EXISTING_FOLDERS" | rofi -dmenu -p "Select or enter folder name:")
+
+if [ -z "$FOLDER" ]; then
+  notify-send "YouTube Audio Downloader" "No folder name provided!" -u critical
+  exit 1
+fi
+
+# Create folder if it doesn't exist
+TARGET_DIR="$BASE_DIR/$FOLDER"
+mkdir -p "$TARGET_DIR"
+
+# Prompt for custom file name via rofi
+FILE_NAME=$(echo "" | rofi -dmenu -p "Enter file name (without extension):")
+
+# If no file name provided, fallback to video title from yt-dlp
+if [ -z "$FILE_NAME" ]; then
+  FILE_NAME="%(title)s"
+fi
+
+# Notify user
+notify-send "YouTube Audio Downloader" "Downloading to $TARGET_DIR..." -u normal
+
+# -------------------------------
+# Download audio with metadata
+# -------------------------------
+if /home/likith/.local/bin/yt-dlp \
+  -f bestaudio \
+  --extract-audio \
+  --audio-format mp3 \
+  --audio-quality 0 \
+  --embed-thumbnail \
+  --embed-metadata \
+  --add-metadata \
+  -o "$TARGET_DIR/$FILE_NAME.%(ext)s" \
+  "$URL"; then
+
+  notify-send "YouTube Audio Downloader" "Download complete! Saved to $TARGET_DIR" -u normal
+else
+  notify-send "YouTube Audio Downloader" "Download failed!" -u critical
+fi
