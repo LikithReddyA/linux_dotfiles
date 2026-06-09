@@ -1,0 +1,34 @@
+gui:
+  theme:
+    activeBorderColor:
+      - "#89b4fa"
+      - bold
+    inactiveBorderColor:
+      - "#a6adc8"
+    optionsTextColor:
+      - "#89b4fa"
+    selectedLineBgColor:
+      - "#313244"
+    cherryPickedCommitBgColor:
+      - "#45475a"
+    cherryPickedCommitFgColor:
+      - "#89b4fa"
+    unstagedChangesColor:
+      - "#f38ba8"
+    searchingActiveBorderColor:
+      - "#f9e2af"
+    defaultFgColor:
+      - "#cdd6f4"
+
+authorColors:
+  "*": "#b4befe"
+
+os:
+  open: >
+    kitty -e nvim
+    -R
+    -c "set nomodifiable"
+    -c "set readonly"
+    -c "set buftype=nofile"
+    -c "set noswapfile"
+    {{filename}}

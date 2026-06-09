@@ -194,8 +194,8 @@ keys = [
     #     lazy.layout.shrink().when(layout=["monadtall", "monadwide"]),
     #     desc="Shrink window / Grow right",
     # ),
-    Key("M-C-h", lazy.layout.grow_left(), desc="Grow window left"),
-    Key("M-C-l", lazy.layout.grow_right(), desc="Grow window right"),
+    Key("M-C-l", lazy.layout.grow(), desc="Grow window left"),
+    Key("M-C-l", lazy.layout.shrink(), desc="Grow window right"),
     Key("M-C-j", lazy.layout.grow_down(), desc="Grow window down"),
     Key("M-C-k", lazy.layout.grow_up(), desc="Grow window up"),
     Key("M-n", lazy.layout.normalize(), desc="Reset all window sizes"),
@@ -470,11 +470,14 @@ wmname = "LG3D"
 #+begin_src python :tangle ~/.config/qtile/widgets/volume.py
 
 from libqtile import widget
+
+from libqtile.widget.base import InLoopPollText
+
 import subprocess
 import threading
 import re
 
-class EventVolume(widget.base.ThreadPoolText):
+class EventVolume(InLoopPollText):
     """
     Event-driven volume widget using `pactl subscribe`.
     Supports:

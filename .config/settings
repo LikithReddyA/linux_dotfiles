@@ -1,0 +1,4 @@
+{
+  "jdk-dir": "/usr/lib/jvm/java-17-openjdk",
+  "enable-linux-desktop": true
+}

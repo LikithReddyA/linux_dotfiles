@@ -1,0 +1,336 @@
+#+title: TMUX Config
+#+AUTHOR: A Likith Reddy
+#+DESCRIPTION: A modern, Vim-friendly tmux configuration with sane defaults, mouse support, and optional plugins/themes.
+#+PROPERTY: header-args :tangle tmux.conf
+#+autotangle: t
+#+STARTUP: showeverything
+
+
+* Table of Contents :toc:
+- [[#overview][Overview]]
+- [[#requirements][Requirements]]
+- [[#installation][Installation]]
+- [[#core-configuration][Core Configuration]]
+  - [[#enable-true-color-support][Enable True Color Support]]
+  - [[#prefix-key][Prefix Key]]
+  - [[#pass-ctrl-through-to-neovim-in-tmux][Pass Ctrl+/ Through to Neovim in Tmux]]
+  - [[#new-windows-in-current-directory][New Windows in Current Directory]]
+  - [[#pane-splitting][Pane Splitting]]
+  - [[#reload-configuration][Reload Configuration]]
+  - [[#pane-resizing][Pane Resizing]]
+  - [[#mouse-support][Mouse Support]]
+  - [[#scrollback-history][Scrollback History]]
+- [[#copy-mode--vim-integration][Copy Mode & Vim Integration]]
+  - [[#vim-style-copy-mode][Vim-Style Copy Mode]]
+  - [[#visual-selection--yank][Visual Selection & Yank]]
+  - [[#disable-mouse-drag-end-auto-copy][Disable Mouse Drag End Auto-Copy]]
+- [[#status-line][Status Line]]
+- [[#plugins-optional][Plugins (Optional)]]
+- [[#catppuccin-status-line-config][Catppuccin status line config]]
+- [[#session-persistence-optional][Session Persistence (Optional)]]
+- [[#neovim-compatibility][Neovim Compatibility]]
+- [[#popups-optional-advanced-features][Popups (Optional Advanced Features)]]
+  - [[#session-switcher-popup][Session Switcher Popup]]
+  - [[#scratchpad-popup][Scratchpad Popup]]
+  - [[#lazygit-popup][LazyGit Popup]]
+- [[#tpm-initialization][TPM Initialization]]
+- [[#philosophy][Philosophy]]
+
+* Overview
+
+This repository contains a clean and extensible *tmux configuration* focused on:
+
+- Vim-style keybindings
+- Productivity-oriented pane and window management
+- Mouse support and large scrollback
+- Optional plugin, popup, and theme integrations
+- Compatibility with Neovim workflows
+
+---
+
+* Requirements
+
+- tmux ≥ 3.2
+- A terminal with true color support (e.g. Alacritty, Kitty, WezTerm)
+- Optional:
+  - Git
+  - Neovim
+  - TPM (Tmux Plugin Manager)
+
+---
+
+* Installation
+
+Clone or copy the configuration into your tmux config directory:
+
+#+BEGIN_SRC sh :tangle no
+mkdir -p ~/.config/tmux
+cp tmux.conf ~/.config/tmux/tmux.conf
+#+END_SRC
+
+Reload tmux configuration:
+
+#+BEGIN_SRC sh :tangle no
+tmux source-file ~/.config/tmux/tmux.conf
+#+END_SRC
+
+Or use the reload keybinding described below.
+
+---
+
+* Core Configuration
+
+** Enable True Color Support
+
+Ensures proper 24-bit color rendering in modern terminals and Neovim.
+
+#+BEGIN_SRC conf
+set -g default-terminal "tmux-256color"
+set -as terminal-overrides ",*:Tc"
+#+END_SRC
+
+---
+
+** Prefix Key
+
+Changes the default tmux prefix from ~Ctrl-b~ to ~Ctrl-Space~.
+
+#+BEGIN_SRC conf
+set -g prefix C-space
+unbind C-b
+bind-key C-space send-prefix
+#+END_SRC
+
+This is more ergonomic and avoids conflicts with common terminal shortcuts.
+
+---
+** Pass Ctrl+/ Through to Neovim in Tmux
+In tmux, the key combination `Ctrl+/` (which is interpreted as `Ctrl+_`) is often swallowed by tmux and never reaches Neovim.
+This prevents Neovim from recognizing `<C-_>` mappings, such as toggling a terminal.
+
+To fix this, we explicitly tell tmux to send `Ctrl+_` through to the underlying application (Neovim).
+This ensures that keybindings like `<C-_>` work reliably inside Neovim even when running in tmux.
+
+#+begin_src tmux
+bind-key -n C-_ send-keys C-_
+#+end_src
+
+** New Windows in Current Directory
+
+Ensures new windows inherit the working directory of the active pane.
+
+#+BEGIN_SRC conf
+bind c new-window -c "#{pane_current_path}"
+#+END_SRC
+
+---
+
+** Pane Splitting
+
+Horizontal and vertical splits follow the current pane directory.
+
+#+BEGIN_SRC conf
+unbind %
+bind | split-window -h -c "#{pane_current_path}"
+
+unbind '"'
+bind - split-window -v -c "#{pane_current_path}"
+#+END_SRC
+
+---
+
+** Reload Configuration
+
+Reloads tmux configuration without restarting tmux.
+
+#+BEGIN_SRC conf
+unbind r
+bind r source-file ~/.config/tmux/tmux.conf \; display-message "󰑓 Config reloaded"
+#+END_SRC
+
+---
+
+** Pane Resizing
+
+Vim-style pane resizing with repeatable key presses.
+
+#+BEGIN_SRC conf
+bind -r j resize-pane -D 5
+bind -r k resize-pane -U 5
+bind -r l resize-pane -R 5
+bind -r h resize-pane -L 5
+bind -r m resize-pane -Z
+#+END_SRC
+
+- ~m~ toggles pane zoom
+
+---
+
+** Mouse Support
+
+Enables mouse interaction for pane selection, resizing, and scrolling.
+
+#+BEGIN_SRC conf
+set -g mouse on
+#+END_SRC
+
+---
+
+** Scrollback History
+
+Increases scrollback buffer size for logs and long-running commands.
+
+#+BEGIN_SRC conf
+set -g history-limit 50000
+#+END_SRC
+
+---
+
+* Copy Mode & Vim Integration
+
+** Vim-Style Copy Mode
+
+Enables Vim keybindings in copy mode.
+
+#+BEGIN_SRC conf
+set-window-option -g mode-keys vi
+#+END_SRC
+
+---
+
+** Visual Selection & Yank
+
+Adds familiar ~v~ and ~y~ bindings inside copy mode.
+
+#+BEGIN_SRC conf
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+#+END_SRC
+
+---
+
+** Disable Mouse Drag End Auto-Copy
+
+Prevents accidental copy on mouse drag release.
+
+#+BEGIN_SRC conf
+unbind -T copy-mode-vi MouseDragEnd1Pane
+#+END_SRC
+
+---
+
+* Status Line
+
+Moves the tmux status bar to the top of the screen.
+
+#+BEGIN_SRC conf
+set-option -g status-position top
+#+END_SRC
+
+---
+* Plugins (Optional)
+
+The following plugins are supported via **TPM** but are commented out by default.
+
+#+BEGIN_SRC conf
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'christoomey/vim-tmux-navigator'
+set -g @plugin 'catppuccin/tmux'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+# set -g @plugin 'tmux-plugins/tmux-yank'
+#+END_SRC
+
+To enable plugins:
+1. Uncomment desired plugins
+2. Install TPM
+3. Press ~prefix + I~
+
+---
+
+* Catppuccin status line config
+#+begin_src conf
+# Configure the catppuccin plugin
+set -g @catppuccin_flavor "mocha"
+set -g @catppuccin_enable_status "on"
+set -g @catppuccin_window_status_style "rounded"
+
+set -g status-left-length 100
+set -g status-right-length 100
+set -g status-left "#{E:@catppuccin_status_session}"
+# set -g status-right "#{E:@catppuccin_status_application}"
+set -gF  status-right "#{@catppuccin_status_directory}"
+# set -agF status-right "#{E:@catppuccin_status_date_time}"
+
+#+end_src
+
+
+* Session Persistence (Optional)
+
+Automatically saves and restores tmux sessions.
+
+#+BEGIN_SRC conf
+# set -g @resurrect-capture-pane-contents 'on'
+# set -g @continuum-restore 'on'
+# set -g @continuum-save-interval '1'
+#+END_SRC
+
+---
+
+* Neovim Compatibility
+
+Recommended settings from Neovim’s `:checkhealth`.
+
+#+BEGIN_SRC conf
+# set-option -sg escape-time 10
+# set-option -g focus-events on
+#+END_SRC
+
+---
+
+* Popups (Optional Advanced Features)
+
+** Session Switcher Popup
+
+#+BEGIN_SRC conf
+# bind w display-popup -E -w 30% -h 50% ~/.config/tmux/scripts/tmux-menu.sh
+#+END_SRC
+
+---
+
+** Scratchpad Popup
+
+#+BEGIN_SRC conf
+# bind T display-popup -E -w 80% -h 80% ~/.config/tmux/scripts/tmux-scratch.sh
+#+END_SRC
+
+---
+
+** LazyGit Popup
+
+#+BEGIN_SRC conf
+# bind g display-popup -d "#{pane_current_path}" -E -w 80% -h 80% -E lazygit
+#+END_SRC
+
+---
+
+* TPM Initialization
+
+Must be placed at the bottom of the config.
+
+#+BEGIN_SRC conf
+run '~/.config/tmux/plugins/tpm/tpm'
+#+END_SRC
+
+---
+
+* Philosophy
+
+This tmux setup favors:
+
+- Predictability over magic
+- Vim muscle memory
+- Minimal defaults with opt-in power features
+- Readability and maintainability
+
+Feel free to fork and adapt.

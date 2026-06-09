@@ -102,6 +102,21 @@ return {
       filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
     })
 
+    -- Pyright (Python LSP)
+    vim.lsp.config("pyright", {
+      capabilities = capabilities,
+      settings = {
+        python = {
+          analysis = {
+            autoSearchPaths = true,
+            useLibraryCodeForTypes = true,
+            diagnosticMode = "workspace",
+            typeCheckingMode = "basic", -- or "strict"
+          },
+        },
+      },
+    })
+
     vim.lsp.config("lua_ls", {
       settings = {
         Lua = {

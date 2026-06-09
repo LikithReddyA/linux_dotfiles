@@ -107,9 +107,9 @@ return {
 
   keys = {
     {
-      "<C-/>",
+      "<C-t>",
       function()
-        require("snacks.terminal").toggle()
+        Snacks.terminal.toggle()
       end,
       desc = "Toggle Terminal",
       mode = { "n", "t" },

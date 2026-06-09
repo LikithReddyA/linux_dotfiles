@@ -8,3 +8,6 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
 alias rm="rm -i"
 alias mv="mv -i"
+
+# Neovim
+alias cnvim='NVIM_APPNAME=custom-nvim nvim'

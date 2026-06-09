@@ -4,6 +4,9 @@ export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export EDITOR="nvim"              # $EDITOR use Emacs in terminal
 export VISUAL="nvim"
 
+export LANG=en_IN.UTF-8
+export LC_ALL=en_IN.UTF-8
+export LC_CTYPE=en_IN.UTF-8
 ### SET FZF DEFAULTS
 export FZF_DEFAULT_OPTS="--layout=reverse --exact --border=bold --border=rounded --margin=3% --color=dark"
 
@@ -13,6 +16,7 @@ export FZF_DEFAULT_OPTS="--layout=reverse --exact --border=bold --border=rounded
 ### "nvim" as manpager
 export MANPAGER="nvim +Man!"
 
+export PAGER="nvim -R"
 ### "less" as manpager
 # export MANPAGER="less"
 

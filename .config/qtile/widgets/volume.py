@@ -1,9 +1,12 @@
 from libqtile import widget
+
+from libqtile.widget.base import InLoopPollText
+
 import subprocess
 import threading
 import re
 
-class EventVolume(widget.base.ThreadPoolText):
+class EventVolume(InLoopPollText):
     """
     Event-driven volume widget using `pactl subscribe`.
     Supports:

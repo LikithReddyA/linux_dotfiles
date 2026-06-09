@@ -3,10 +3,12 @@
 #![enable(unwrap_variant_newtypes)]
 (
     address: "127.0.0.1:6600",
-    lyrics_dir: "~/music/lyrics",
     password: None,
-    theme: "catppuccin_mocha",
-    on_song_change: ["~/.config/rmpc/increment_play_count"], 
+    theme: "pywal16",
+    lyrics_dir: "~/music/lyrics",
+	  enable_config_hot_reload: true,
+    cache_dir: None,
+    on_song_change: None,
     volume_step: 5,
     max_fps: 30,
     scrolloff: 0,
@@ -31,7 +33,6 @@
             "<S-Tab>": PreviousTab,
             "1":       SwitchToTab("Playing"),
             "4":       SwitchToTab("Dir"),
-            "5":       SwitchToTab("Lyrics"),
             "3":       SwitchToTab("Lists"),
             "2":       SwitchToTab("Find"),
             "q":       Quit,

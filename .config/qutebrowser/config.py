@@ -187,6 +187,7 @@ c.url.searchengines = {
     "ub": "https://www.urbandictionary.com/define.php?term={}",
     "wiki": "https://en.wikipedia.org/wiki/{}",
     "yt": "https://www.youtube.com/results?search_query={}",
+    "pub": "https://pub.dev/packages?q={}",
 }
 
 

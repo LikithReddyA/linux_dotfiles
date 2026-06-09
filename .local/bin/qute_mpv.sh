@@ -21,4 +21,4 @@ URL="$1"
 echo "Playing: $URL"
 
 # Run mpv with the URL
-exec mpv "$URL"
+exec mpv --fullscreen "$URL"
